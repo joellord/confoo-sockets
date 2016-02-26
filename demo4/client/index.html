@@ -97,12 +97,7 @@ var socket = io();
 $(document).on("ready", function() {
 
     socket.on("tweet", function(data) {
-        var newTableRow = $("<tr>");
-        newTableRow.append($("<td>").html("<b>" + data.user.name + "</b>"));
-        var imgUrl = (data.extended_entities && data.extended_entities.media && data.extended_entities.media[0]) ? data.extended_entities.media[0].media_url : "";
-        newTableRow.append($("<td>").html(imgUrl ? "<img class='thumbnail' src='" + imgUrl + "' />" : ""));
-        newTableRow.append($("<td>").html(data.text));
-        newTableRow.prependTo($("#chatBox").find("tbody"));
+        appendNewTweet(data);
     });
 
     $("#longProcess").on("click", function() {
@@ -121,10 +116,18 @@ $(document).on("ready", function() {
     });
 });
 
+function appendNewTweet(data) {
+    var newTableRow = $("<tr>");
+    newTableRow.append($("<td>").html("<b>" + data.user.name + "</b>"));
+    var imgUrl = (data.extended_entities && data.extended_entities.media && data.extended_entities.media[0]) ? data.extended_entities.media[0].media_url : "";
+    newTableRow.append($("<td>").html(imgUrl ? "<img class='thumbnail' src='" + imgUrl + "' />" : ""));
+    newTableRow.append($("<td>").html(data.text));
+    newTableRow.prependTo($("#chatBox").find("tbody"));
+}
 
 function getFormattedTime(timestamp) {
     var newDate = new Date(timestamp);
-    var formattedTime = "";
+    var formattedTime;
 
     formattedTime = newDate.getHours() + ":";
     formattedTime += (newDate.getMinutes() < 10) ? "0" + newDate.getMinutes() : newDate.getMinutes();
@@ -133,7 +136,6 @@ function getFormattedTime(timestamp) {
 
     return formattedTime;
 }
-
 
 </script>
 </html>
