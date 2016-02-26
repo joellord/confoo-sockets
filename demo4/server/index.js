@@ -5,8 +5,9 @@ var server = require("http").createServer(app);
 
 var ip = require("./helpers/ip");
 var twit = require("twit");
+var twitterCredentials = require("./twitterCredentials");
 var longProcess = require("./helpers/longProcess");
-var keyword = "#mondaymotivation";
+var keyword = "#confoo";
 
 //Web socket
 var io = require("socket.io")(server);
@@ -29,12 +30,7 @@ app.get("/keyword", function(req, res) {
 });
 
 //Twitter Stream listener
-var t = new twit({
-    consumer_key: "7TfY2MCekYTBz9xMUbyaF2Yqa",
-    consumer_secret: "9GNAoEGAcp6JzgrbiSVvb4SNtj7Kkfl7iYrPkAB009EWZgSdvt",
-    access_token: "820037342-76EPEsvAorIrGGxokgxH6aQe1gNobsDFWPW3AXfX",
-    access_token_secret: "FDVCjPKwgAiLfFTUuXOkDeDsajbLBp2TBG3MUedL1srsO"
-});
+var t = new twit(twitterCredentials);
 
 var stream = t.stream("statuses/filter", {track: keyword});
 
